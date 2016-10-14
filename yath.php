@@ -30,7 +30,7 @@ class Yahtzee
             "Bonus" => '',
             "Totaaldeel1" => '',
             "Totaaldeel2" => '',
-            "Totaal"=> ''
+            "Totaal" => ''
         );
 
         $this->running = true;
@@ -40,14 +40,6 @@ class Yahtzee
     //  Seeplt de game als ...
     public function play($postdata)
     {
-
-        $this->scoreblad['Totaaldeel1']= $this->scoreblad['Eenen']+$this->scoreblad['Tweeen']+$this->scoreblad['Drieen']+$this->scoreblad['Vieren']+$this->scoreblad['Vijven']+$this->scoreblad['Zessen'];
-        $this->scoreblad['Totaaldeel2']=$this->scoreblad['Threeofkind']+$this->scoreblad['Fourofkind']+$this->scoreblad['Fullhouse']+$this->scoreblad['Kleinestraat']+$this->scoreblad['Grotestraat']+$this->scoreblad['Yathzee']+$this->scoreblad['Change'];
-        $this->scoreblad['Totaal']= $this->scoreblad['Totaaldeel1']+$this->scoreblad['Totaaldeel2'];
-        if($this->scoreblad['Totaaldeel1']>=63){
-            $this->scoreblad["Bonus"]= 35;
-
-        }
         foreach ($this->scoreblad as $key => $value) {
             if (isset($postdata[$key])) {
                 $this->setScoreblad($key, $postdata[$key]);
@@ -92,7 +84,7 @@ class Yahtzee
             $this->scoreblad['Kleinestraat'] . " Kleine straat<br>" .
             $this->scoreblad['Grotestraat'] . " Grote straat<br>" .
             $this->scoreblad['Yathzee'] . " Yathzee<br>" .
-            $this->scoreblad['Change'] . " change<br>".
+            $this->scoreblad['Change'] . " change<br>" .
             $this->scoreblad['Totaaldeel1'] . " totaal deel1<br>" .
             $this->scoreblad['Totaaldeel2'] . " totaal deel2<br>" .
             $this->scoreblad['Totaal'] . " Totaal score<br>" .
@@ -100,6 +92,46 @@ class Yahtzee
 
         return $score;
     }
+
+    public function calcaluteScoreDeel1()
+    {
+        $this->scoreblad['Totaaldeel1'] = $this->scoreblad['Eenen'] + $this->scoreblad['Tweeen'] + $this->scoreblad['Drieen'] + $this->scoreblad['Vieren'] + $this->scoreblad['Vijven'] + $this->scoreblad['Zessen'];
+    }
+
+    public function calculateScoreDeel2()
+    {
+        $this->scoreblad['Totaaldeel2'] = $this->scoreblad['Threeofkind'] + $this->scoreblad['Fourofkind'] + $this->scoreblad['Fullhouse'] + $this->scoreblad['Kleinestraat'] + $this->scoreblad['Grotestraat'] + $this->scoreblad['Yathzee'] + $this->scoreblad['Change'];
+    }
+
+    public function calcaluteBonus()
+    {
+        if ($this->scoreblad['Totaaldeel1'] >= 63) {
+            $this->scoreblad["Bonus"] = 35;
+        }
+        $this->scoreblad["Bonus"] = 0;
+    }
+
+    public function setStandardScoreValue()
+    {
+        if (isset($this->scoreblad['Bonus'])) {
+
+        }
+    }
+
+    public function calcaluteScoreDeel1WithBonus()
+    {
+        if (isset($this->scoreblad['Bonus'])) {
+            $this->scoreblad['Totaaldeel1metBonus'] = $this->scoreblad['Totaaldeel1'] + $this->scoreblad['Bonus'];
+        } else {
+            $this->scoreblad['Totaaldeel1metBonus'] = $this->scoreblad['Totaaldeel1'];
+        }
+    }
+
+    public function calculateTotaal()
+    {
+        $this->scoreblad['Totaal'] = $this->scoreblad['Totaaldeel1metBonus'] + $this->scoreblad['Totaaldeel2'];
+    }
+
 
     // Vult de waardes in van het scoreblad
     public function setScoreblad($naam, $getal)
@@ -210,6 +242,9 @@ class Yahtzee
 
         if ($j == 4 && isset($this->zelfde[3]) && isset($this->zelfde[4]) && isset($this->zelfde[5]) && isset($this->zelfde[6]))
             return 30;
+        else {
+            return 0;
+        }
     }
 
     // Genereert de waarde: grotestraat + 0 werkt niet.
@@ -224,7 +259,6 @@ class Yahtzee
         }
         if ($j == 5 && isset($this->zelfde[2]) && isset($this->zelfde[3]) && isset($this->zelfde[4]) && isset($this->zelfde[5]))
             return 40;
-
 
         else {
             return 0;
@@ -281,7 +315,7 @@ class Yahtzee
     // Hier kan je waardes vast zetten van het bovenste scoreboard
     public function claimUpperScore()
     {
-        echo $this->eenen() . " ones <input type='checkbox' value='" . $this->eenen() . "' name='Ones'><br>";
+        echo $this->eenen() . " eenen <input type='checkbox' value='" . $this->eenen() . "' name='Eenen'><br>";
         echo $this->tweeen() . " tweeen<input type='checkbox' value='" . $this->tweeen() . "' name='Tweeen'><br>";
         echo $this->drieen() . " drieen<input type='checkbox' value='" . $this->drieen() . "' name='Drieen'><br>";
         echo $this->vieren() . " vieren<input type='checkbox' value='" . $this->vieren() . "' name='Vieren'><br>";
@@ -307,15 +341,89 @@ class Yahtzee
         echo $this->generateDices();
         if ($this->getTurn() == 0) {
             echo "u moet nu een waarde invullen<br>";
-        }
-        else {
+        } else {
             echo "Je hebt nog" . $this->getTurn() . "beurten voor gooien<br>";
         }
         $this->claimUpperScore();
         $this->claimLowerScore();
-        echo "<br>scorekaart<br>";
-        echo $this->getScoreblad();
-        echo print_r($this->scoreblad);
+        echo "<br>";
+        echo '
+                <table>
+                  <tr>
+                    <th>Bovenste Helft:</th>
+                  </tr>
+                  <tr>
+                    <td>Eenen:</td>
+                    <td>  ' . $this->scoreblad['Eenen'] . ' </td>
+                  </tr>
+                  <tr>
+                    <td>Twos:</td>
+                    <td>' . $this->scoreblad['Tweeen'] . '</td>
+                  </tr>
+                    <tr>
+                    <td>Threes:</td>
+                    <td>' . $this->scoreblad['Drieen'] . '</td>
+                  </tr>
+                    <tr>
+                    <td>Fours:</td>
+                    <td>' . $this->scoreblad['Vieren'] . '</td>
+                  </tr>
+                    <tr>
+                    <td>Fives:</td>
+                    <td>' . $this->scoreblad['Vijven'] . '</td>
+                  </tr>
+                   <tr>
+                    <td>Sixes:</td>
+                    <td>' . $this->scoreblad['Zessen'] . '</td>
+                  </tr>
+                  <tr>
+                    <td>Total:</td>
+                    <td>' . $this->scoreblad['Totaaldeel1'] . '</td>
+                  </tr>
+                   <td>Extra bonus:</td>
+                    <td>' . $this->scoreblad['Bonus'] . '</td>
+                  </tr>
+                   <td>Totaal (Bovenste helft):</td>
+                    <td>' . $this->scoreblad['Totaaldeel1metBonus'] . '</td>
+                  </tr>
+                                    <tr>
+                    <th>Onderste Helft:</th>
+                  </tr>
+                  <tr>
+                    <td>Three of a kind:</td>
+                    <td>' . $this->scoreblad['Threeofkind'] . '</td>
+                  </tr>
+                  <tr>
+                    <td>Four of a kind:</td>
+                    <td>' . $this->scoreblad['Fourofkind'] . '</td>
+                  </tr>
+                    <tr>
+                    <td>Full house:</td>
+                    <td>' . $this->scoreblad['Fullhouse'] . '</td>
+                  </tr>
+                    <tr>
+                    <td>Kleine straat:</td>
+                    <td>' . $this->scoreblad['Kleinestraat'] . '</td>
+                  </tr>
+                    <tr>
+                    <td>Grote straat:</td>
+                    <td>' . $this->scoreblad['Grotestraat'] . '</td>
+                  </tr>
+                   <tr>
+                    <td>Yahtzee:</td>
+                    <td>' . $this->scoreblad['Yathzee'] . '</td>
+                  </tr>
+                  <tr>
+                    <td>Change:</td>
+                    <td>' . $this->scoreblad['Change'] . '</td>
+                  </tr>
+                   <td>Onderste (Onderste helft):</td>
+                    <td>' . $this->scoreblad['Totaaldeel2'] . '</td>
+                  </tr>
+                  <th>Totaal:</th>
+                    <td>' . $this->scoreblad['Totaal'] . '</td>
+                  </tr>
+               </table>';
         echo "<br>";
         echo "<input type='submit' value='Volgende zet' name='generate' />";
         echo "reset?<input type='checkbox' value='Reset' name='Reset' />";
