@@ -40,10 +40,7 @@ class Yahtzee
     //  Seeplt de game als ...
     public function play($postdata)
     {
-<<<<<<< HEAD
-        $i = 0;
-=======
->>>>>>> e153f297e9b4a232f46b215a246a2239ef5e64b1
+
         foreach ($this->scoreblad as $key => $value) {
             if ($this->scoreblad[$key] == '') {
                 $i++;
@@ -342,11 +339,8 @@ class Yahtzee
     // Hier kan je waardes vast zetten van het bovenste scoreboard
     public function claimUpperScore()
     {
-<<<<<<< HEAD
-        echo $this->eenen() . " ones <input type='checkbox' value='" . $this->eenen() . "' name='Eenen'><br>";
-=======
+
         echo $this->eenen() . " eenen <input type='checkbox' value='" . $this->eenen() . "' name='Eenen'><br>";
->>>>>>> e153f297e9b4a232f46b215a246a2239ef5e64b1
         echo $this->tweeen() . " tweeen<input type='checkbox' value='" . $this->tweeen() . "' name='Tweeen'><br>";
         echo $this->drieen() . " drieen<input type='checkbox' value='" . $this->drieen() . "' name='Drieen'><br>";
         echo $this->vieren() . " vieren<input type='checkbox' value='" . $this->vieren() . "' name='Vieren'><br>";
@@ -377,11 +371,7 @@ class Yahtzee
         }
         $this->claimUpperScore();
         $this->claimLowerScore();
-<<<<<<< HEAD
-        echo "<br>scorekaart<br>";
-        echo $this->getScoreblad();
-        //echo print_r($this->scoreblad);
-=======
+
         echo "<br>";
         echo '
                 <table>
@@ -460,7 +450,7 @@ class Yahtzee
                     <td>' . $this->scoreblad['Totaal'] . '</td>
                   </tr>
                </table>';
->>>>>>> e153f297e9b4a232f46b215a246a2239ef5e64b1
+
         echo "<br>";
         echo "<input type='submit' value='Volgende zet' name='generate' />";
         echo "reset?<input type='checkbox' value='Reset' name='Reset' />";
