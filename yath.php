@@ -40,26 +40,42 @@ class Yahtzee
     //  Seeplt de game als ...
     public function play($postdata)
     {
-
-        $this->scoreblad['Totaaldeel1']= $this->scoreblad['Eenen']+$this->scoreblad['Tweeen']+$this->scoreblad['Drieen']+$this->scoreblad['Vieren']+$this->scoreblad['Vijven']+$this->scoreblad['Zessen'];
-        $this->scoreblad['Totaaldeel2']=$this->scoreblad['Threeofkind']+$this->scoreblad['Fourofkind']+$this->scoreblad['Fullhouse']+$this->scoreblad['Kleinestraat']+$this->scoreblad['Grotestraat']+$this->scoreblad['Yathzee']+$this->scoreblad['Change'];
-        $this->scoreblad['Totaal']= $this->scoreblad['Totaaldeel1']+$this->scoreblad['Totaaldeel2'];
-        if($this->scoreblad['Totaaldeel1']>=63){
-            $this->scoreblad["Bonus"]= 35;
-
-        }
+        $i = 0;
         foreach ($this->scoreblad as $key => $value) {
-            if (isset($postdata[$key])) {
-                $this->setScoreblad($key, $postdata[$key]);
+            if ($this->scoreblad[$key] == '') {
+                $i++;
             }
         }
+       if($i>0){
 
-        for ($i = 0; $i < count($this->dicesB); $i++) {
-            if (isset($postdata[$i])) {
-                $this->dicesB[$i] = FALSE;
-            } else $this->dicesB[$i] = TRUE;
+
+
+            foreach ($this->scoreblad as $key => $value) {
+                if (isset($postdata[$key])) {
+                    $this->setScoreblad($key, $postdata[$key]);
+                }
+            }
+
+            for ($i = 0; $i < count($this->dicesB); $i++) {
+                if (isset($postdata[$i])) {
+                    $this->dicesB[$i] = FALSE;
+                } else $this->dicesB[$i] = TRUE;
+            }
+
+
+            $this->display();
         }
-        $this->display();
+        elseif($i==0||($i!=0&&$this->scoreblad['Bonus']=='')){
+            $this->EndGame();
+        }
+    }
+
+
+
+
+
+    public function EndGame(){
+        return $end= "Het spel is tot zijn einde";
     }
 
     // Maakt een beurt aan
@@ -281,7 +297,7 @@ class Yahtzee
     // Hier kan je waardes vast zetten van het bovenste scoreboard
     public function claimUpperScore()
     {
-        echo $this->eenen() . " ones <input type='checkbox' value='" . $this->eenen() . "' name='Ones'><br>";
+        echo $this->eenen() . " ones <input type='checkbox' value='" . $this->eenen() . "' name='Eenen'><br>";
         echo $this->tweeen() . " tweeen<input type='checkbox' value='" . $this->tweeen() . "' name='Tweeen'><br>";
         echo $this->drieen() . " drieen<input type='checkbox' value='" . $this->drieen() . "' name='Drieen'><br>";
         echo $this->vieren() . " vieren<input type='checkbox' value='" . $this->vieren() . "' name='Vieren'><br>";
@@ -315,7 +331,7 @@ class Yahtzee
         $this->claimLowerScore();
         echo "<br>scorekaart<br>";
         echo $this->getScoreblad();
-        echo print_r($this->scoreblad);
+        //echo print_r($this->scoreblad);
         echo "<br>";
         echo "<input type='submit' value='Volgende zet' name='generate' />";
         echo "reset?<input type='checkbox' value='Reset' name='Reset' />";
