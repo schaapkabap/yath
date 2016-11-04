@@ -8,12 +8,32 @@ class Yahtzee
     private $dices = array(0, 0, 0, 0, 0);
     private $turn;
     private $zelfde = array(0, 0, 0, 0, 0);
-    private $scoreblad;
+    private $scoreblad, $scoreblad1;
 
     public function __construct()
     {
         $this->setTurn(4);
         $this->scoreblad = array(
+            "Eenen" => '',
+            "Tweeen" => '',
+            "Drieen" => '',
+            "Vieren" => '',
+            "Vijven" => '',
+            "Zessen" => '',
+            "Threeofkind" => '',
+            "Fourofkind" => '',
+            "Fullhouse" => '',
+            "Kleinestraat" => '',
+            "Grotestraat" => '',
+            "Yathzee" => '',
+            "Change" => '',
+            "Bonus" => '',
+            "Totaaldeel1" => '',
+            "Totaaldeel2" => '',
+            "Totaal" => ''
+        );
+
+        $this->scoreblad1 = array(
             "Eenen" => '',
             "Tweeen" => '',
             "Drieen" => '',
