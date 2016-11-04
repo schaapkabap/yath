@@ -40,15 +40,13 @@ class Yahtzee
     //  Seeplt de game als ...
     public function play($postdata)
     {
-
+        $i = 0;
         foreach ($this->scoreblad as $key => $value) {
             if ($this->scoreblad[$key] == '') {
                 $i++;
             }
         }
-       if($i>0){
-
-
+        if($i>0){
 
             foreach ($this->scoreblad as $key => $value) {
                 if (isset($postdata[$key])) {
@@ -61,18 +59,12 @@ class Yahtzee
                     $this->dicesB[$i] = FALSE;
                 } else $this->dicesB[$i] = TRUE;
             }
-
-
             $this->display();
         }
         elseif($i==0||($i!=0&&$this->scoreblad['Bonus']=='')){
             $this->EndGame();
         }
     }
-
-
-
-
 
     public function EndGame(){
         return $end= "Het spel is tot zijn einde";
@@ -90,36 +82,10 @@ class Yahtzee
         return $this->turn = $turn;
     }
 
-    // Maakt het scoreboard aan
-    public function getScoreblad()
-    {
-        $score =
-            $this->scoreblad['Eenen'] . " eenen<br>" .
-            $this->scoreblad['Tweeen'] . " tweeen<br>" .
-            $this->scoreblad['Drieen'] . " drieen<br>" .
-            $this->scoreblad['Vieren'] . " vieren<br>" .
-            $this->scoreblad['Vijven'] . " vijven<br>" .
-            $this->scoreblad['Zessen'] . " zessen <br><br>" .
-            $this->scoreblad['Bonus'] . " bonus<br>" .
-            $this->scoreblad['Totaaldeel1'] . " totaal deel1<br>" .
-            $this->scoreblad['Threeofkind'] . " three of kind<br>" .
-            $this->scoreblad['Fourofkind'] . " four of kind<br>" .
-            $this->scoreblad['Fullhouse'] . " full house<br>" .
-            $this->scoreblad['Kleinestraat'] . " Kleine straat<br>" .
-            $this->scoreblad['Grotestraat'] . " Grote straat<br>" .
-            $this->scoreblad['Yathzee'] . " Yathzee<br>" .
-            $this->scoreblad['Change'] . " change<br>" .
-            $this->scoreblad['Totaaldeel1'] . " totaal deel1<br>" .
-            $this->scoreblad['Totaaldeel2'] . " totaal deel2<br>" .
-            $this->scoreblad['Totaal'] . " Totaal score<br>" .
-            "totaal score";
-
-        return $score;
-    }
-
     public function calcaluteScoreDeel1()
     {
         $this->scoreblad['Totaaldeel1'] = $this->scoreblad['Eenen'] + $this->scoreblad['Tweeen'] + $this->scoreblad['Drieen'] + $this->scoreblad['Vieren'] + $this->scoreblad['Vijven'] + $this->scoreblad['Zessen'];
+        $this->scoreblad['Totaaldeel1'] = 0;
     }
 
     public function calculateScoreDeel2()
@@ -138,17 +104,9 @@ class Yahtzee
     public function setStandardScoreValue()
     {
         if (isset($this->scoreblad['Bonus'])) {
-
+            return 0;
         }
-    }
-
-    public function calcaluteScoreDeel1WithBonus()
-    {
-        if (isset($this->scoreblad['Bonus'])) {
-            $this->scoreblad['Totaaldeel1metBonus'] = $this->scoreblad['Totaaldeel1'] + $this->scoreblad['Bonus'];
-        } else {
-            $this->scoreblad['Totaaldeel1metBonus'] = $this->scoreblad['Totaaldeel1'];
-        }
+        return 0;
     }
 
     public function calculateTotaal()
@@ -169,7 +127,7 @@ class Yahtzee
     // Genereert de waarde: eenen
     public function eenen()
     {
-        return $getal = $this->showNumbers(1);
+        return $this->showNumbers(1);
     }
 
     // Genereert de waarde: tweeen
@@ -214,8 +172,8 @@ class Yahtzee
                 return 0;
             }
         }
-
     }
+
 
     // Genereert de waarde: four of a kind
     public function fourofkind()
@@ -271,7 +229,7 @@ class Yahtzee
         }
     }
 
-    // Genereert de waarde: grotestraat + 0 werkt niet.
+    // Genereert de waarde: grotestraat.
     public function grotestraat()
     {
         $zelfde = array_count_values($this->dices);
@@ -410,7 +368,7 @@ class Yahtzee
                     <td>' . $this->scoreblad['Bonus'] . '</td>
                   </tr>
                    <td>Totaal (Bovenste helft):</td>
-                    <td>' . $this->scoreblad['Totaaldeel1metBonus'] . '</td>
+                    <td>' . $this->scoreblad['Totaaldeel1'] . +  $this->scoreblad['Bonus'] . '</td>
                   </tr>
                                     <tr>
                     <th>Onderste Helft:</th>
