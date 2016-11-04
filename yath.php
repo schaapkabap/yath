@@ -9,6 +9,7 @@ class Yahtzee
     private $turn;
     private $zelfde = array(0, 0, 0, 0, 0);
     private $scoreblad, $scoreblad1;
+    private $player = true;
 
     public function __construct()
     {
@@ -67,11 +68,21 @@ class Yahtzee
             }
         }
         if($i>0){
-
-            foreach ($this->scoreblad as $key => $value) {
-                if (isset($postdata[$key])) {
-                    $this->setScoreblad($key, $postdata[$key]);
+            if ($this->player === TRUE) {
+                foreach ($this->scoreblad as $key => $value) {
+                    if (isset($postdata[$key])) {
+                        $this->setScoreblad($key, $postdata[$key]);
+                    }
                 }
+                $this->computer();
+            } else {
+                echo var_dump($this->player);
+                foreach ($this->scoreblad1 as $key => $value) {
+                    if (isset($postdata[$key])) {
+                        $this->scoreblad1[$key] = $postdata[$key];
+                    }
+                }
+                $this->player = TRUE;
             }
 
             for ($i = 0; $i < count($this->dicesB); $i++) {
@@ -84,6 +95,69 @@ class Yahtzee
         elseif($i==0||($i!=0&&$this->scoreblad['Bonus']=='')){
             $this->EndGame();
         }
+    }
+
+    public function computer(){
+        $this->player = false;
+        $test = "";
+        $getal = array();
+
+        for ($i = 0; $i < 4; $i++){
+            $this->generateDices(false);
+        }
+        if($this->eenen() > 0){
+            $test = "Eenen";
+            array_push($getal, $this->eenen());
+        }
+        if($this->tweeen() > 0){
+            $test = "Tweeen";
+            $getal = $this->tweeen();
+        }
+        if($this->drieen() > 0){
+            $test = "Drieen";
+            $getal = $this->drieen();
+        }
+        if($this->vieren() > 0){
+            $test = "Vieren";
+            $getal = $this->vieren();
+        }
+        if($this->vijven() > 0){
+            $test = "Vijven";
+            $getal = $this->vijven();
+        }
+        if($this->zessen() > 0){
+            $test = "Zessen";
+            $getal = $this->zessen();
+        }
+        if($this->threeofkind() > 0){
+            $test = "Threeofkind";
+            $getal = $this->threeofkind();
+        }
+        if($this->fourofkind() > 0){
+            $test = "Fourofkind";
+            $getal = $this->fourofkind();
+        }
+        if($this->fullhouse() > 0){
+            $test = "Fullhouse";
+            $getal = $this->fullhouse();
+        }
+        if ($this->kleinestraat() > 0){
+            $test = "Kleinestraat";
+            $getal = $this->kleinestraat();
+        }
+        if ($this->grotestraat() > 0){
+            $test = "Grotestraat";
+            $getal = $this->grotestraat();
+        }
+        if ($this->yathzee() > 0){
+            $test = "Yathzee";
+            $getal = $this->yathzee();
+        }
+        if ($this->change() > 0){
+            $test = "Change";
+            $getal = $this->change();
+        }
+        echo "<input type='hidden' value='" . $getal . "' name='".$test."'>";
     }
 
     public function EndGame(){
@@ -286,17 +360,24 @@ class Yahtzee
     }
 
     //  Genereert willekeurige Dobbelsteenwaardes.
-    public function generateDices()
+    public function generateDices($player)
     {
-        if ($this->getTurn() == 0)
+//        if ($this->getTurn() == 0 && $this->player){
+//            $this->computer();
+//        }
+        if ($this->getTurn() == 0){
             return;
-        $this->turn--;
+        }
+        if ($player)
+            $this->turn--;
         for ($i = 0; $i <= 4; $i++) {
             if ($this->dicesB[$i] == TRUE) {
                 $this->dices[$i] = rand(1, 6);
             }
-            echo $this->dices[$i];
-            echo "<input type='radio' value='true' name='" . $i . "'> <input type='radio' value='false' name='" . $i . "'><br>";
+            if ($player) {
+                echo "<input type='radio' value='true' name='" . $i . "'> <input type='radio' value='false' name='" . $i . "'><br>";
+                echo $this->dices[$i];
+            }
         }
         if ($this->getTurn() == 0)
             return;
@@ -341,17 +422,19 @@ class Yahtzee
     // Geeft het spel weer.
     public function display()
     {
-        echo $this->generateDices();
+        echo $this->generateDices(true);
         if ($this->getTurn() == 0) {
             echo "u moet nu een waarde invullen<br>";
         } else {
             echo "Je hebt nog" . $this->getTurn() . "beurten voor gooien<br>";
         }
-        $this->claimUpperScore();
-        $this->claimLowerScore();
 
         echo "<br>";
-        echo '
+        if ($this->player) {
+            $this->claimUpperScore();
+            $this->claimLowerScore();
+            echo '
+PLAYER
                 <table>
                   <tr>
                     <th>Bovenste Helft:</th>
@@ -388,7 +471,7 @@ class Yahtzee
                     <td>' . $this->scoreblad['Bonus'] . '</td>
                   </tr>
                    <td>Totaal (Bovenste helft):</td>
-                    <td>' . $this->scoreblad['Totaaldeel1'] . +  $this->scoreblad['Bonus'] . '</td>
+                    <td>' . $this->scoreblad['Totaaldeel1'] . +$this->scoreblad['Bonus'] . '</td>
                   </tr>
                                     <tr>
                     <th>Onderste Helft:</th>
@@ -428,7 +511,84 @@ class Yahtzee
                     <td>' . $this->scoreblad['Totaal'] . '</td>
                   </tr>
                </table>';
-
+        } else {
+            echo 'COMPUTER<table>
+                  <tr>
+                    <th>Bovenste Helft:</th>
+                  </tr>
+                  <tr>
+                    <td>Eenen:</td>
+                    <td>  ' . $this->scoreblad1['Eenen'] . ' </td>
+                  </tr>
+                  <tr>
+                    <td>Twos:</td>
+                    <td>' . $this->scoreblad1['Tweeen'] . '</td>
+                  </tr>
+                    <tr>
+                    <td>Threes:</td>
+                    <td>' . $this->scoreblad1['Drieen'] . '</td>
+                  </tr>
+                    <tr>
+                    <td>Fours:</td>
+                    <td>' . $this->scoreblad1['Vieren'] . '</td>
+                  </tr>
+                    <tr>
+                    <td>Fives:</td>
+                    <td>' . $this->scoreblad1['Vijven'] . '</td>
+                  </tr>
+                   <tr>
+                    <td>Sixes:</td>
+                    <td>' . $this->scoreblad1['Zessen'] . '</td>
+                  </tr>
+                  <tr>
+                    <td>Total:</td>
+                    <td>' . $this->scoreblad1['Totaaldeel1'] . '</td>
+                  </tr>
+                   <td>Extra bonus:</td>
+                    <td>' . $this->scoreblad1['Bonus'] . '</td>
+                  </tr>
+                   <td>Totaal (Bovenste helft):</td>
+                    <td>' . $this->scoreblad1['Totaaldeel1'] . +$this->scoreblad1['Bonus'] . '</td>
+                  </tr>
+                                    <tr>
+                    <th>Onderste Helft:</th>
+                  </tr>
+                  <tr>
+                    <td>Three of a kind:</td>
+                    <td>' . $this->scoreblad1['Threeofkind'] . '</td>
+                  </tr>
+                  <tr>
+                    <td>Four of a kind:</td>
+                    <td>' . $this->scoreblad1['Fourofkind'] . '</td>
+                  </tr>
+                    <tr>
+                    <td>Full house:</td>
+                    <td>' . $this->scoreblad1['Fullhouse'] . '</td>
+                  </tr>
+                    <tr>
+                    <td>Kleine straat:</td>
+                    <td>' . $this->scoreblad1['Kleinestraat'] . '</td>
+                  </tr>
+                    <tr>
+                    <td>Grote straat:</td>
+                    <td>' . $this->scoreblad1['Grotestraat'] . '</td>
+                  </tr>
+                   <tr>
+                    <td>Yahtzee:</td>
+                    <td>' . $this->scoreblad1['Yathzee'] . '</td>
+                  </tr>
+                  <tr>
+                    <td>Change:</td>
+                    <td>' . $this->scoreblad1['Change'] . '</td>
+                  </tr>
+                   <td>Onderste (Onderste helft):</td>
+                    <td>' . $this->scoreblad1['Totaaldeel2'] . '</td>
+                  </tr>
+                  <th>Totaal:</th>
+                    <td>' . $this->scoreblad1['Totaal'] . '</td>
+                  </tr>
+               </table>';
+        }
         echo "<br>";
         echo "<input type='submit' value='Volgende zet' name='generate' />";
         echo "reset?<input type='checkbox' value='Reset' name='Reset' />";
