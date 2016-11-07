@@ -1,0 +1,33 @@
+*{
+    margin: 0;
+}
+
+body{
+    background-color: #489eba;
+}
+
+table{
+    float:right;
+    margin-top:-345px;
+}
+
+form{
+    margin-left: auto ;
+    margin-right: auto ;
+    background-color: #edecf1;
+    height:700px;
+    width:600px;
+    border-radius:5px;
+    font-size:18px;
+    color:#001126;
+    opacity: 0.8;
+}
+
+form.td{
+    margin-top:10px;
+}
+
+td{
+    font-size:18px;
+    color: #001126;
+}
