@@ -71,7 +71,7 @@ class Yahtzee
                 $i++;
             }
         }
-        if($i>0){
+        if ($i > 0) {
             $this->calcaluteScoreDeel1();
             $this->calculateScoreDeel2();
             if ($this->player) {
@@ -96,14 +96,14 @@ class Yahtzee
             }
 
             $this->display();
-        }
-        elseif($i==0||($i!=0&&$this->scoreblad['Bonus']=='')){
+        } elseif ($i == 0 || ($i != 0 && $this->scoreblad['Bonus'] == '')) {
             $this->EndGame();
         }
     }
 
-    public function computer(){
-        if ($this->computerPlayed)return;
+    public function computer()
+    {
+        if ($this->computerPlayed) return;
         $this->computerPlayed = true;
         $this->player = false;
         $this->test = "";
@@ -111,63 +111,64 @@ class Yahtzee
 
         $this->generateDices();
 
-        if($this->eenen() > $this->getal && $this->scoreblad1["Eenen"] == ""){
+        if ($this->eenen() > $this->getal && $this->scoreblad1["Eenen"] == "") {
             $this->test = "Eenen";
             $this->getal = $this->eenen();
         }
-        if($this->tweeen() > $this->getal && $this->scoreblad1["Tweeen"] == ""){
+        if ($this->tweeen() > $this->getal && $this->scoreblad1["Tweeen"] == "") {
             $this->test = "Tweeen";
             $this->getal = $this->tweeen();
         }
-        if($this->drieen() > $this->getal && $this->scoreblad1["Drieen"] == ""){
+        if ($this->drieen() > $this->getal && $this->scoreblad1["Drieen"] == "") {
             $this->test = "Drieen";
             $this->getal = $this->drieen();
         }
-        if($this->vieren() > $this->getal && $this->scoreblad1["Vieren"] == ""){
+        if ($this->vieren() > $this->getal && $this->scoreblad1["Vieren"] == "") {
             $this->test = "Vieren";
             $this->getal = $this->vieren();
         }
-        if($this->vijven() > $this->getal && $this->scoreblad1["Vijven"] == ""){
+        if ($this->vijven() > $this->getal && $this->scoreblad1["Vijven"] == "") {
             $this->test = "Vijven";
             $this->getal = $this->vijven();
         }
-        if($this->zessen() > $this->getal && $this->scoreblad1["Zessen"] == ""){
+        if ($this->zessen() > $this->getal && $this->scoreblad1["Zessen"] == "") {
             $this->test = "Zessen";
             $this->getal = $this->zessen();
         }
-        if($this->threeofkind() > $this->getal && $this->scoreblad1["Threeofkind"] == ""){
+        if ($this->threeofkind() > $this->getal && $this->scoreblad1["Threeofkind"] == "") {
             $this->test = "Threeofkind";
             $this->getal = $this->threeofkind();
         }
-        if($this->fourofkind() > $this->getal && $this->scoreblad1["Fourofkind"] == ""){
+        if ($this->fourofkind() > $this->getal && $this->scoreblad1["Fourofkind"] == "") {
             $this->test = "Fourofkind";
             $this->getal = $this->fourofkind();
         }
-        if($this->fullhouse() > $this->getal && $this->scoreblad1["Fullhouse"] == ""){
+        if ($this->fullhouse() > $this->getal && $this->scoreblad1["Fullhouse"] == "") {
             $this->test = "Fullhouse";
             $this->getal = $this->fullhouse();
         }
-        if ($this->kleinestraat() > $this->getal && $this->scoreblad1["Kleinestraat"] == ""){
+        if ($this->kleinestraat() > $this->getal && $this->scoreblad1["Kleinestraat"] == "") {
             $this->test = "Kleinestraat";
             $this->getal = $this->kleinestraat();
         }
-        if ($this->grotestraat() > $this->getal && $this->scoreblad1["Grotestraat"] == ""){
+        if ($this->grotestraat() > $this->getal && $this->scoreblad1["Grotestraat"] == "") {
             $this->test = "Grotestraat";
             $this->getal = $this->grotestraat();
         }
-        if ($this->yathzee() > $this->getal && $this->scoreblad1["Yathzee"] == ""){
+        if ($this->yathzee() > $this->getal && $this->scoreblad1["Yathzee"] == "") {
             $this->test = "Yathzee";
             $this->getal = $this->yathzee();
         }
-        if ($this->change() > $this->getal && $this->scoreblad1["Change"] == ""){
+        if ($this->change() > $this->getal && $this->scoreblad1["Change"] == "") {
             $this->test = "Change";
             $this->getal = $this->change();
         }
-        echo $this->test . " <input value='".$this->getal."' name='".$this->test."'>";
+        echo $this->test . " <input value='" . $this->getal . "' name='" . $this->test . "'>";
     }
 
-    public function EndGame(){
-        return $end= "Het spel is tot zijn einde";
+    public function EndGame()
+    {
+        return $end = "Het spel is tot zijn einde";
     }
 
     // Maakt een beurt aan
@@ -373,7 +374,7 @@ class Yahtzee
 //        if ($this->getTurn() == 0 && $this->player){
 //            $this->computer();
 //        }
-        if ($this->getTurn() == 0){
+        if ($this->getTurn() == 0) {
             return;
         }
         if ($this->player)
@@ -387,7 +388,7 @@ class Yahtzee
                 echo "<input type='radio' value='true' name='" . $i . "'> <input type='radio' value='false' name='" . $i . "'><br>";
             }
         }
-        if ($this->getTurn() == 0){
+        if ($this->getTurn() == 0) {
             return;
         }
     }
@@ -407,13 +408,13 @@ class Yahtzee
     // Hier kan je waardes vast zetten van het bovenste scoreboard
     public function claimUpperScore()
     {
-
         echo $this->eenen() . " eenen <input type='checkbox' value='" . $this->eenen() . "' name='Eenen'><br>";
         echo $this->tweeen() . " tweeen<input type='checkbox' value='" . $this->tweeen() . "' name='Tweeen'><br>";
         echo $this->drieen() . " drieen<input type='checkbox' value='" . $this->drieen() . "' name='Drieen'><br>";
         echo $this->vieren() . " vieren<input type='checkbox' value='" . $this->vieren() . "' name='Vieren'><br>";
         echo $this->vijven() . " vijven<input type='checkbox' value='" . $this->vijven() . "' name='Vijven'><br>";
         echo $this->zessen() . " zessen<input type='checkbox' value='" . $this->zessen() . "' name='Zessen'> <br><br>";
+
     }
 
     // Hier kan je waardes vast zetten van het onderste scoreboard
@@ -445,9 +446,9 @@ class Yahtzee
             $this->claimLowerScore();
         }
         echo '
-                <table>
+                <table id="PlayerScore">
                   <tr>
-                    <th>Bovenste Helft:</th>
+                    <th>Player Bovenste Helft:</th>
                   </tr>
                   <tr>
                     <td>Eenen:</td>
@@ -484,7 +485,7 @@ class Yahtzee
                     <td>' . $this->scoreblad['Totaaldeel1'] . +$this->scoreblad['Bonus'] . '</td>
                   </tr>
                                     <tr>
-                    <th>Onderste Helft:</th>
+                    <th>Player Onderste Helft:</th>
                   </tr>
                   <tr>
                     <td>Three of a kind:</td>
@@ -521,9 +522,9 @@ class Yahtzee
                     <td>' . $this->scoreblad['Totaal'] . '</td>
                   </tr>
                </table>';
-        echo 'COMPUTER<table>
+        echo '<table id="ComputerScore">
                   <tr>
-                    <th>Bovenste Helft:</th>
+                    <th>Computer Bovenste Helft:</th>
                   </tr>
                   <tr>
                     <td>Eenen:</td>
@@ -560,7 +561,7 @@ class Yahtzee
                     <td>' . $this->scoreblad1['Totaaldeel1'] . +$this->scoreblad1['Bonus'] . '</td>
                   </tr>
                                     <tr>
-                    <th>Onderste Helft:</th>
+                    <th>Computer Onderste Helft:</th>
                   </tr>
                   <tr>
                     <td>Three of a kind:</td>
