@@ -112,55 +112,55 @@ class Yahtzee
 
         $this->generateDices();
 
-        if($this->eenen() > 0 && $this->scoreblad1["Eenen"] == ""){
+        if($this->eenen() > $this->getal && $this->scoreblad1["Eenen"] == ""){
             $this->test = "Eenen";
             $this->getal = $this->eenen();
         }
-        if($this->tweeen() > 0 && $this->scoreblad1["Tweeen"] == ""){
+        if($this->tweeen() > $this->getal && $this->scoreblad1["Tweeen"] == ""){
             $this->test = "Tweeen";
             $this->getal = $this->tweeen();
         }
-        if($this->drieen() > 0 && $this->scoreblad1["Drieen"] == ""){
+        if($this->drieen() > $this->getal && $this->scoreblad1["Drieen"] == ""){
             $this->test = "Drieen";
             $this->getal = $this->drieen();
         }
-        if($this->vieren() > 0 && $this->scoreblad1["Vieren"] == ""){
+        if($this->vieren() > $this->getal && $this->scoreblad1["Vieren"] == ""){
             $this->test = "Vieren";
             $this->getal = $this->vieren();
         }
-        if($this->vijven() > 0 && $this->scoreblad1["Vijven"] == ""){
+        if($this->vijven() > $this->getal && $this->scoreblad1["Vijven"] == ""){
             $this->test = "Vijven";
             $this->getal = $this->vijven();
         }
-        if($this->zessen() > 0 && $this->scoreblad1["Zessen"] == ""){
+        if($this->zessen() > $this->getal && $this->scoreblad1["Zessen"] == ""){
             $this->test = "Zessen";
             $this->getal = $this->zessen();
         }
-        if($this->threeofkind() > 0 && $this->scoreblad1["Threeofkind"] == ""){
+        if($this->threeofkind() > $this->getal && $this->scoreblad1["Threeofkind"] == ""){
             $this->test = "Threeofkind";
             $this->getal = $this->threeofkind();
         }
-        if($this->fourofkind() > 0 && $this->scoreblad1["Fourofkind"] == ""){
+        if($this->fourofkind() > $this->getal && $this->scoreblad1["Fourofkind"] == ""){
             $this->test = "Fourofkind";
             $this->getal = $this->fourofkind();
         }
-        if($this->fullhouse() > 0 && $this->scoreblad1["Fullhouse"] == ""){
+        if($this->fullhouse() > $this->getal && $this->scoreblad1["Fullhouse"] == ""){
             $this->test = "Fullhouse";
             $this->getal = $this->fullhouse();
         }
-        if ($this->kleinestraat() > 0 && $this->scoreblad1["Kleinestraat"] == ""){
+        if ($this->kleinestraat() > $this->getal && $this->scoreblad1["Kleinestraat"] == ""){
             $this->test = "Kleinestraat";
             $this->getal = $this->kleinestraat();
         }
-        if ($this->grotestraat() > 0 && $this->scoreblad1["Grotestraat"] == ""){
+        if ($this->grotestraat() > $this->getal && $this->scoreblad1["Grotestraat"] == ""){
             $this->test = "Grotestraat";
             $this->getal = $this->grotestraat();
         }
-        if ($this->yathzee() > 0 && $this->scoreblad1["Yathzee"] == ""){
+        if ($this->yathzee() > $this->getal && $this->scoreblad1["Yathzee"] == ""){
             $this->test = "Yathzee";
             $this->getal = $this->yathzee();
         }
-        if ($this->change() > 0 && $this->scoreblad1["Change"] == ""){
+        if ($this->change() > $this->getal && $this->scoreblad1["Change"] == ""){
             $this->test = "Change";
             $this->getal = $this->change();
         }
