@@ -81,6 +81,11 @@ class Yahtzee
                     }
                 }
                 $this->computer();
+                for ($i = 0; $i < count($this->dicesB); $i++) {
+                    if (isset($postdata[$i])) {
+                        $this->dicesB[$i] = FALSE;
+                    } else $this->dicesB[$i] = TRUE;
+                }
             } else {
                 foreach ($this->scoreblad1 as $key => $value) {
                     if (isset($postdata[$key])) {
@@ -90,11 +95,6 @@ class Yahtzee
                 $this->player = true;
             }
 
-            for ($i = 0; $i < count($this->dicesB); $i++) {
-                if (isset($postdata[$i])) {
-                    $this->dicesB[$i] = FALSE;
-                } else $this->dicesB[$i] = TRUE;
-            }
             $this->display();
         }
         elseif($i==0||($i!=0&&$this->scoreblad['Bonus']=='')){
@@ -103,7 +103,6 @@ class Yahtzee
     }
 
     public function computer(){
-        $this->player = false;
         if ($this->computerPlayed)return;
         $this->computerPlayed = true;
         $this->player = false;
