@@ -14,9 +14,16 @@ class Yahtzee
     private $getal;
     private $player = true;
     private $computerPlayed = false;
+    private $player1;
 
-    public function __construct()
-    {
+    private $database = "localhost", $dbname = "yatzee", $username = "root", $password = "";
+//
+//    public function __construct()
+//    {
+//
+//    }
+
+    private function restart(){
         $this->setTurn(4);
         $this->scoreblad = array(
             "Eenen" => '',
@@ -59,47 +66,52 @@ class Yahtzee
         );
 
         $this->running = true;
-
     }
 
     //  Seeplt de game als ...
     public function play($postdata)
     {
         $i = 0;
-        foreach ($this->scoreblad as $key => $value) {
-            if ($this->scoreblad[$key] == '') {
-                $i++;
-            }
-        }
-        if($i>0){
-            $this->calcaluteScoreDeel1();
-            $this->calculateScoreDeel2();
-            if ($this->player) {
-                foreach ($this->scoreblad as $key => $value) {
-                    if (isset($postdata[$key])) {
-                        $this->setScoreblad($key, $postdata[$key]);
-                    }
-                }
-                $this->computer();
-                for ($i = 0; $i < count($this->dicesB); $i++) {
-                    if (isset($postdata[$i])) {
-                        $this->dicesB[$i] = FALSE;
-                    } else $this->dicesB[$i] = TRUE;
-                }
-            } else {
-                foreach ($this->scoreblad1 as $key => $value) {
-                    if (isset($postdata[$key])) {
-                        $this->scoreblad1[$key] = $postdata[$key];
-                    }
-                }
-                $this->player = true;
-            }
 
-            $this->display();
+        if (isset($postdata['startgame'])){
+        if ($this->player1 == ""){
+            $this->player1 = $postdata['player'];
+            $this->restart();
         }
-        elseif($i==0||($i!=0&&$this->scoreblad['Bonus']=='')){
-            $this->EndGame();
+        } if ($this->player1 != ""){
+            foreach ($this->scoreblad as $key => $value) {
+                if ($this->scoreblad[$key] == '') {
+                    $i++;
+                }
+            }
+            if ($i > 0) {
+                $this->calcaluteScoreDeel1();
+                $this->calculateScoreDeel2();
+                if ($this->player) {
+                    foreach ($this->scoreblad as $key => $value) {
+                        if (isset($postdata[$key])) {
+                            $this->setScoreblad($key, $postdata[$key]);
+                        }
+                    }
+                    $this->computer();
+                    for ($i = 0; $i < count($this->dicesB); $i++) {
+                        if (isset($postdata[$i])) {
+                            $this->dicesB[$i] = FALSE;
+                        } else $this->dicesB[$i] = TRUE;
+                    }
+                } else {
+                    foreach ($this->scoreblad1 as $key => $value) {
+                        if (isset($postdata[$key])) {
+                            $this->scoreblad1[$key] = $postdata[$key];
+                        }
+                    }
+                    $this->player = true;
+                }
+            } elseif ($i == 0 || ($i != 0 && $this->scoreblad['Bonus'] == '')) {
+                $this->EndGame();
+            }
         }
+        $this->display();
     }
 
     public function computer(){
@@ -111,55 +123,55 @@ class Yahtzee
 
         $this->generateDices();
 
-        if($this->eenen() > $this->getal && $this->scoreblad1["Eenen"] == ""){
+        if($this->eenen() >= $this->getal && $this->scoreblad1["Eenen"] == ""){
             $this->test = "Eenen";
             $this->getal = $this->eenen();
         }
-        if($this->tweeen() > $this->getal && $this->scoreblad1["Tweeen"] == ""){
+        if($this->tweeen() >= $this->getal && $this->scoreblad1["Tweeen"] == ""){
             $this->test = "Tweeen";
             $this->getal = $this->tweeen();
         }
-        if($this->drieen() > $this->getal && $this->scoreblad1["Drieen"] == ""){
+        if($this->drieen() >= $this->getal && $this->scoreblad1["Drieen"] == ""){
             $this->test = "Drieen";
             $this->getal = $this->drieen();
         }
-        if($this->vieren() > $this->getal && $this->scoreblad1["Vieren"] == ""){
+        if($this->vieren() >= $this->getal && $this->scoreblad1["Vieren"] == ""){
             $this->test = "Vieren";
             $this->getal = $this->vieren();
         }
-        if($this->vijven() > $this->getal && $this->scoreblad1["Vijven"] == ""){
+        if($this->vijven() >= $this->getal && $this->scoreblad1["Vijven"] == ""){
             $this->test = "Vijven";
             $this->getal = $this->vijven();
         }
-        if($this->zessen() > $this->getal && $this->scoreblad1["Zessen"] == ""){
+        if($this->zessen() >= $this->getal && $this->scoreblad1["Zessen"] == ""){
             $this->test = "Zessen";
             $this->getal = $this->zessen();
         }
-        if($this->threeofkind() > $this->getal && $this->scoreblad1["Threeofkind"] == ""){
+        if($this->threeofkind() >= $this->getal && $this->scoreblad1["Threeofkind"] == ""){
             $this->test = "Threeofkind";
             $this->getal = $this->threeofkind();
         }
-        if($this->fourofkind() > $this->getal && $this->scoreblad1["Fourofkind"] == ""){
+        if($this->fourofkind() >= $this->getal && $this->scoreblad1["Fourofkind"] == ""){
             $this->test = "Fourofkind";
             $this->getal = $this->fourofkind();
         }
-        if($this->fullhouse() > $this->getal && $this->scoreblad1["Fullhouse"] == ""){
+        if($this->fullhouse() >= $this->getal && $this->scoreblad1["Fullhouse"] == ""){
             $this->test = "Fullhouse";
             $this->getal = $this->fullhouse();
         }
-        if ($this->kleinestraat() > $this->getal && $this->scoreblad1["Kleinestraat"] == ""){
+        if ($this->kleinestraat() >= $this->getal && $this->scoreblad1["Kleinestraat"] == ""){
             $this->test = "Kleinestraat";
             $this->getal = $this->kleinestraat();
         }
-        if ($this->grotestraat() > $this->getal && $this->scoreblad1["Grotestraat"] == ""){
+        if ($this->grotestraat() >= $this->getal && $this->scoreblad1["Grotestraat"] == ""){
             $this->test = "Grotestraat";
             $this->getal = $this->grotestraat();
         }
-        if ($this->yathzee() > $this->getal && $this->scoreblad1["Yathzee"] == ""){
+        if ($this->yathzee() >= $this->getal && $this->scoreblad1["Yathzee"] == ""){
             $this->test = "Yathzee";
             $this->getal = $this->yathzee();
         }
-        if ($this->change() > $this->getal && $this->scoreblad1["Change"] == ""){
+        if ($this->change() >= $this->getal && $this->scoreblad1["Change"] == ""){
             $this->test = "Change";
             $this->getal = $this->change();
         }
@@ -167,6 +179,9 @@ class Yahtzee
     }
 
     public function EndGame(){
+        $this->connect();
+        $this->setData();
+        $this->running = false;
         return $end= "Het spel is tot zijn einde";
     }
 
@@ -431,6 +446,10 @@ class Yahtzee
     // Geeft het spel weer.
     public function display()
     {
+        if ($this->player1 == ""){
+            echo '<input type="text" name="player"><input type="submit" value="Start" name="startgame">';
+            return;
+        }
         if ($this->player)
             echo $this->generateDices();
         if ($this->getTurn() == 0) {
@@ -600,5 +619,34 @@ class Yahtzee
         echo "<br>";
         echo "<input type='submit' value='Volgende zet' name='generate' />";
         echo "reset?<input type='checkbox' value='Reset' name='Reset' />";
+    }
+
+    public function connect() {
+        $this->db = new PDO('mysql:host=' . $this->database . ';dbname=' . $this->dbname . ';charset=utf8mb4', $this->username, $this->password);
+        $this->db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    }
+
+    public function disconnect() {
+        $this->db = null;
+    }
+
+    public function setData() {
+        $this->connect();
+        $query = $this->db->query('SELECT id, username, score FROM user WHERE username="' . $this->player1 . '"');
+        if ($this->turn) {
+            if ($query->rowCount() > 0) {
+                foreach ($query as $row) {
+                    $newScore = $row['score'] += 1;
+                    $this->db->exec('UPDATE user SET score="' . $newScore . '" WHERE id=' . $row['id']);
+                }
+            } else {
+                $this->db->exec('INSERT INTO user (username, score) VALUES ("' . $this->player1 . '", 1)');
+            }
+        } else {
+            if (!$query->rowCount() > 0) {
+                $this->db->exec('INSERT INTO user (username) VALUES ("' . $this->player1 . '")');
+            }
+        }
+        $this->disconnect();
     }
 }
