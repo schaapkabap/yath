@@ -74,43 +74,43 @@ class Yahtzee
         $i = 0;
 
         if (isset($postdata['startgame'])){
-        if ($this->player1 == ""){
-            $this->player1 = $postdata['player'];
-            $this->restart();
-        }
+            if ($this->player1 == ""){
+                $this->player1 = $postdata['player'];
+                $this->restart();
+            }
         } if ($this->player1 != ""){
-            foreach ($this->scoreblad as $key => $value) {
-                if ($this->scoreblad[$key] == '') {
-                    $i++;
-                }
-            }
-            if ($i > 0) {
-                $this->calcaluteScoreDeel1();
-                $this->calculateScoreDeel2();
-                if ($this->player) {
-                    foreach ($this->scoreblad as $key => $value) {
-                        if (isset($postdata[$key])) {
-                            $this->setScoreblad($key, $postdata[$key]);
-                        }
-                    }
-                    $this->computer();
-                    for ($i = 0; $i < count($this->dicesB); $i++) {
-                        if (isset($postdata[$i])) {
-                            $this->dicesB[$i] = FALSE;
-                        } else $this->dicesB[$i] = TRUE;
-                    }
-                } else {
-                    foreach ($this->scoreblad1 as $key => $value) {
-                        if (isset($postdata[$key])) {
-                            $this->scoreblad1[$key] = $postdata[$key];
-                        }
-                    }
-                    $this->player = true;
-                }
-            } elseif ($i == 0 || ($i != 0 && $this->scoreblad['Bonus'] == '')) {
-                $this->EndGame();
+        foreach ($this->scoreblad as $key => $value) {
+            if ($this->scoreblad[$key] == '') {
+                $i++;
             }
         }
+        if ($i > 0) {
+            $this->calcaluteScoreDeel1();
+            $this->calculateScoreDeel2();
+            if ($this->player) {
+                foreach ($this->scoreblad as $key => $value) {
+                    if (isset($postdata[$key])) {
+                        $this->setScoreblad($key, $postdata[$key]);
+                    }
+                }
+                $this->computer();
+                for ($i = 0; $i < count($this->dicesB); $i++) {
+                    if (isset($postdata[$i])) {
+                        $this->dicesB[$i] = FALSE;
+                    } else $this->dicesB[$i] = TRUE;
+                }
+            } else {
+                foreach ($this->scoreblad1 as $key => $value) {
+                    if (isset($postdata[$key])) {
+                        $this->scoreblad1[$key] = $postdata[$key];
+                    }
+                }
+                $this->player = true;
+            }
+        } elseif ($i == 0 || ($i != 0 && $this->scoreblad['Bonus'] == '')) {
+            $this->EndGame();
+        }
+    }
         $this->display();
     }
 

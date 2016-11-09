@@ -1,33 +1,35 @@
 *{
     margin: 0;
 }
-
 body{
-    background-color: #489eba;
+    background-color: gainsboro;
+}
+#ComputerScore{
+    position: fixed;
+    top: 0;
+    right: 0;
+    z-index:99;
+
+}
+#PlayerScore{
+    position: fixed;
+    top: 0;
+    right: 250px;
+    z-index:99;
 }
 
-table{
-    float:right;
-    margin-top:-345px;
+#ComputerScore, #PlayerScore{
+    margin-top:100px;
+    background-color:#fff;
+    height:500px;
 }
 
 form{
-    margin-left: auto ;
-    margin-right: auto ;
-    background-color: #edecf1;
-    height:700px;
-    width:600px;
+    margin-top:100px;
+    margin-left:50px;
+    background-color: #fff;
+    height:500px;
     border-radius:5px;
-    font-size:18px;
-    color:#001126;
-    opacity: 0.8;
 }
 
-form.td{
-    margin-top:10px;
-}
 
-td{
-    font-size:18px;
-    color: #001126;
-}
